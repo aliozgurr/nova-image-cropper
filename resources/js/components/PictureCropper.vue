@@ -1,13 +1,24 @@
 <template>
   <div
-    ref="container"
-    class="container"
+      ref="container"
+      class="container"
   >
-    <img
-      ref="img"
-      :src="image"
-      alt="Picture"
-    >
+    <div>
+      <div class="flex justify-between mb-4">
+        <div class="mr-2">{{__('Width')}}: {{ Math.round(currentWidth) }}px</div>
+        <div>{{__('Height')}}: {{ Math.round(currentHeight) }}px</div>
+      </div>
+      <div
+          ref="container"
+          class="container"
+      >
+        <img
+            ref="img"
+            :src="image"
+            alt="Picture"
+        >
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -33,7 +44,9 @@ export default {
     return {
       cropper: null,
       width: 0,
-      height: 0
+      height: 0,
+      currentWidth: 0,
+      currentHeight: 0
     }
   },
 
@@ -71,7 +84,11 @@ export default {
         aspectRatio: self.ratio,
         checkCrossOrigin: false,
         minContainerWidth: self.width,
-        minContainerHeight: self.height
+        minContainerHeight: self.height,
+        crop(event) {
+          self.currentWidth = event.detail.width
+          self.currentHeight = event.detail.height
+        },
       })
       this.cropper.replace(this.image)
     },
